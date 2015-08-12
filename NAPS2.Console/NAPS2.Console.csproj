@@ -63,7 +63,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Linux|x86'">
-    <OutputPath>bin\x86\Linux\</OutputPath>
+    <OutputPath>bin\Linux\</OutputPath>
     <DefineConstants>TRACE;STANDALONE LINUX</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>

@@ -55,6 +55,8 @@ function Build-NAPS2 {
     & $msbuild ..\..\NAPS2.sln /v:q /p:Configuration=StandaloneZIP
     "Building 7Z"
     & $msbuild ..\..\NAPS2.sln /v:q /p:Configuration=Standalone7Z
+    "Building LINUX"
+    & $msbuild ..\..\NAPS2.sln /v:q /p:Configuration=Linux
 	"Build complete."
 }
 

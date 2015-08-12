@@ -1,6 +1,7 @@
 ﻿param([Parameter(Position=0, Mandatory=$false)] [String] $Version,
       [Parameter(Mandatory=$false)] [String] $Name,
-      [Switch] $Force)
+      [Switch] $Force,
+      [Switch] $SkipBuild)
 
 . .\naps2.ps1
 
@@ -22,7 +23,9 @@ if (-not (Test-Path $PublishDir)) {
 }
 
 Set-NAPS2-Version $Version
-Build-NAPS2
+if (-not $SkipBuild) {
+    Build-NAPS2
+}
 
 # MSI Installer
 cp "..\..\NAPS2.Setup\bin\Release\NAPS2.Setup.msi" ($PublishDir + "naps2-$Name-setup.msi")
@@ -36,6 +39,7 @@ if (-not [string]::IsNullOrEmpty($Name)) {
 	ren ($PublishDir + "naps2-$Version-setup.exe") "naps2-$Name-setup.exe"
 }
 
-# Standalone ZIP/7Z
+# Standalone ZIP/7Z/Linux
 Publish-NAPS2-Standalone $PublishDir "StandaloneZIP" ($PublishDir + "naps2-$Name-portable.zip")
 Publish-NAPS2-Standalone $PublishDir "Standalone7Z" ($PublishDir + "naps2-$Name-portable.7z")
+Publish-NAPS2-Standalone $PublishDir "Linux" ($PublishDir + "naps2-$Name-linux.tar")

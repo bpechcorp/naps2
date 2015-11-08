@@ -9,5 +9,6 @@ namespace NAPS2.Util
     {
         public bool UseToolStripRenderHack { get { return false; } }
         public bool AllowEmail { get { return false; } }
+        public bool UseWebClientAsync { get { return false; } }
     }
 }

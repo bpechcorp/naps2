@@ -207,10 +207,12 @@
     <Compile Include="Util\ConditionalControls.cs" />
     <Compile Include="Operation\IOperation.cs" />
     <Compile Include="Host\IX86HostServiceFactory.cs" />
+    <Compile Include="Util\LinuxPlatformCompat.cs" />
     <Compile Include="Util\IOverwritePrompt.cs" />
     <Compile Include="Host\IX86HostService.cs" />
     <Compile Include="Util\ISaveNotify.cs" />
     <Compile Include="Util\Lifecycle.cs" />
+    <Compile Include="Util\IPlatformCompat.cs" />
     <Compile Include="Util\Log.cs" />
     <Compile Include="Util\NullLogger.cs" />
     <Compile Include="Ocr\IOcrEngine.cs" />
@@ -308,6 +310,7 @@
     <Compile Include="ImportExport\DirectImageTransfer.cs" />
     <Compile Include="Util\KeyboardShortcutManager.cs" />
     <Compile Include="Util\StillImage.cs" />
+    <Compile Include="Util\Platform.cs" />
     <Compile Include="Util\StringWrapper.cs" />
     <Compile Include="Util\ThreadFactory.cs" />
     <Compile Include="Util\Unmanaged.cs" />
@@ -321,6 +324,7 @@
     <Compile Include="WinForms\DragScrollListView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Util\WindowsPlatformCompat.cs" />
     <Compile Include="WinForms\FAbout.cs">
       <SubType>Form</SubType>
     </Compile>

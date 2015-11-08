@@ -8,5 +8,6 @@ namespace NAPS2.Util
     public class WindowsPlatformCompat : IPlatformCompat
     {
         public bool UseToolStripRenderHack { get { return true; } }
+        public bool AllowEmail { get { return true; } }
     }
 }

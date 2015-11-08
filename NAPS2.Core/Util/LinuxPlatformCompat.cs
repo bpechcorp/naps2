@@ -8,5 +8,6 @@ namespace NAPS2.Util
     public class LinuxPlatformCompat : IPlatformCompat
     {
         public bool UseToolStripRenderHack { get { return false; } }
+        public bool AllowEmail { get { return false; } }
     }
 }

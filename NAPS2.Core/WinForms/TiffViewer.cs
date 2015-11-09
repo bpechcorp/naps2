@@ -74,8 +74,15 @@ namespace NAPS2.WinForms
                 if (image != null)
                 {
                     xzoom = Math.Max(Math.Min(value, 1000), 10);
-                    double displayWidth = image.Width * ((double)xzoom / 100);
-                    double displayHeight = image.Height * ((double)xzoom / 100) * (image.HorizontalResolution / (double)image.VerticalResolution);
+                    double displayWidth = image.Width * (xzoom / 100);
+                    // "Squish" the image to display correctly if the horizontal and vertical resolutions aren't the same
+                    double ratio = (image.HorizontalResolution/(double) image.VerticalResolution);
+                    // Check for NaN in case resolution isn't specified (only happens on Mono/Linux as far as I know)
+                    if (double.IsNaN(ratio))
+                    {
+                        ratio = 1;
+                    }
+                    double displayHeight = image.Height * (xzoom / 100) * ratio;
                     pbox.Image = image;
                     pbox.Width = (int)displayWidth;
                     pbox.Height = (int)displayHeight;

@@ -20,7 +20,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Windows.Forms;
+using Mono.SANE;
 using NAPS2.Scan.Images;
 using NAPS2.WinForms;
 
@@ -46,14 +49,32 @@ namespace NAPS2.Scan.Sane
 
         protected override ScanDevice PromptForDeviceInternal()
         {
+            MessageBox.Show(string.Format("{0} scanners available. Choosing first. Choices: {1}",
+                SANEControl.Scanners.Count, string.Join(", ", SANEControl.Scanners.Select(x => x.Key))));
             // TODO
-            return null;
+            var scanner = SANEControl.Scanners.Select(x => x.Value).FirstOrDefault();
+            if (scanner == null)
+            {
+                return null;
+            }
+            MessageBox.Show("id= " + scanner.Deviceid + " |model= " + scanner.Model + " |type= " + scanner.Type + " |vendor= " + scanner.Vendor);
+            return new ScanDevice(scanner.Deviceid, scanner.Model);
         }
 
         protected override IEnumerable<IScannedImage> ScanInternal()
         {
-            // TODO
-            yield break;
+            SANEControl.RefreshScanners();
+            var scanner = SANEControl.GetScannerByDeviceID(ScanDevice.ID);
+            foreach (var option in scanner.Options)
+            {
+                MessageBox.Show("Option: " + option.Key + " | " + option.Value.CurrentSetting + " | " +
+                                option.Value.Switch);
+            }
+            using (var image = scanner.ScanImage())
+            using (var bitmap = new Bitmap(image))
+            {
+                yield return scannedImageFactory.Create(bitmap, ScanBitDepth.C24Bit, false);
+            }
         }
     }
 }

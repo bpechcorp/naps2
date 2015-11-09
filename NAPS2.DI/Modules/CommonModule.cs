@@ -14,6 +14,7 @@ using NAPS2.Ocr;
 using NAPS2.Operation;
 using NAPS2.Scan;
 using NAPS2.Scan.Images;
+using NAPS2.Scan.Sane;
 using NAPS2.Scan.Twain;
 using NAPS2.Scan.Wia;
 using NAPS2.Util;
@@ -47,8 +48,15 @@ namespace NAPS2.DI.Modules
 #else
             Bind<IScanDriverFactory>().To<NinjectScanDriverFactory>();
 #endif
+#if LINUX
+            Bind<IScanDriver>().To<SaneScanDriver>().Named(SaneScanDriver.DRIVER_NAME);
+            // TODO: Remove below
+            Bind<IScanDriver>().To<SaneScanDriver>().Named(WiaScanDriver.DRIVER_NAME);
+            Bind<IScanDriver>().To<SaneScanDriver>().Named(TwainScanDriver.DRIVER_NAME);
+#else
             Bind<IScanDriver>().To<WiaScanDriver>().Named(WiaScanDriver.DRIVER_NAME);
             Bind<IScanDriver>().To<TwainScanDriver>().Named(TwainScanDriver.DRIVER_NAME);
+#endif
 
             // Config
             Bind<IProfileManager>().To<ProfileManager>().InSingletonScope();

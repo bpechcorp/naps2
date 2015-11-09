@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using NAPS2.Config;
 using NAPS2.Scan.Images;
+using NAPS2.Util;
 
 namespace NAPS2.WinForms
 {
@@ -79,7 +80,8 @@ namespace NAPS2.WinForms
         public void AppendImage(ScannedImage img)
         {
             ilThumbnailList.Images.Add(thumbnails[img]);
-            Items.Add("", ilThumbnailList.Images.Count - 1);
+            string text = Platform.Compat.UseEmptyStringInListViewItems ? "" : " ";
+            Items.Add(text, ilThumbnailList.Images.Count - 1);
         }
 
         public void ReplaceThumbnail(int index, ScannedImage img)

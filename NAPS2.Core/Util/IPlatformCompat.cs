@@ -10,5 +10,6 @@ namespace NAPS2.Util
         bool UseToolStripRenderHack { get; }
         bool AllowEmail { get; }
         bool UseWebClientAsync { get; }
+        bool UseEmptyStringInListViewItems { get; }
     }
 }

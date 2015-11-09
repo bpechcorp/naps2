@@ -11,5 +11,6 @@ namespace NAPS2.Util
         public bool AllowEmail { get { return true; } }
         public bool UseWebClientAsync { get { return true; } }
         public bool UseEmptyStringInListViewItems { get { return true; } }
+        public bool UseStandardTextAlign { get { return true; } }
     }
 }

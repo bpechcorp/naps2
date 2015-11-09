@@ -159,12 +159,20 @@ namespace NAPS2.WinForms
 
         private void RelayoutToolbar()
         {
+            if (!Platform.Compat.UseStandardTextAlign)
+            {
+                tStrip.Size = new Size(tStrip.Width, tStrip.Height + 10);
+            }
             // Wrap text as necessary
             using (var g = CreateGraphics())
             {
                 foreach (var btn in tStrip.Items.OfType<ToolStripItem>())
                 {
                     btn.Text = stringWrapper.Wrap(btn.Text ?? "", 80, g, btn.Font);
+                    if (!Platform.Compat.UseStandardTextAlign)
+                    {
+                        btn.TextAlign = ContentAlignment.BottomCenter;
+                    }
                 }
             }
             ResetToolbarMargin();

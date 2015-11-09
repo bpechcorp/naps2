@@ -104,11 +104,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Linux|x86'">
     <OutputPath>bin\Linux\</OutputPath>
     <DefineConstants>TRACE;STANDALONE LINUX</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Ninject" Condition="'$(Configuration)'!='Linux'">
@@ -227,7 +228,9 @@
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <PropertyGroup>
     <PostBuildEvent>call "$(VS110COMNTOOLS)..\tools\vsvars32.bat"
-editbin /LARGEADDRESSAWARE "$(TargetPath)"</PostBuildEvent>
+editbin /LARGEADDRESSAWARE "$(TargetPath)"
+"F:\Devel\VS\NAPS2\pdb2mdb\pdb2mdb.exe" "F:\Devel\VS\NAPS2\NAPS2\bin\Linux\NAPS2.exe"
+"F:\Devel\VS\NAPS2\pdb2mdb\pdb2mdb.exe" "F:\Devel\VS\NAPS2\NAPS2\bin\Linux\NAPS2.Core.dll"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

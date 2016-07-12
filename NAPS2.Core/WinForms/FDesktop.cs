@@ -105,7 +105,7 @@ namespace NAPS2.WinForms
             thumbnailList1.ThumbnailSize = new Size(thumbnailSize, thumbnailSize);
             SetThumbnailSpacing(thumbnailSize);
 
-            if (appConfigManager.Config.HideEmailButton || !Platform.Compat.AllowEmail))
+            if (appConfigManager.Config.HideEmailButton || !Platform.Compat.AllowEmail)
             {
                 tStrip.Items.Remove(tsdEmailPDF);
             }

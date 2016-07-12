@@ -305,6 +305,9 @@ Global
 		{4D349529-149B-498B-8A55-373E6A67E1F0}.InstallerMSI|Mixed Platforms.Build.0 = Release|Any CPU
 		{4D349529-149B-498B-8A55-373E6A67E1F0}.InstallerMSI|x86.ActiveCfg = Release|Any CPU
 		{4D349529-149B-498B-8A55-373E6A67E1F0}.InstallerMSI|x86.Build.0 = Release|Any CPU
+		{4D349529-149B-498B-8A55-373E6A67E1F0}.Linux|Any CPU.ActiveCfg = Release|Any CPU
+		{4D349529-149B-498B-8A55-373E6A67E1F0}.Linux|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{4D349529-149B-498B-8A55-373E6A67E1F0}.Linux|x86.ActiveCfg = Release|Any CPU
 		{4D349529-149B-498B-8A55-373E6A67E1F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D349529-149B-498B-8A55-373E6A67E1F0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4D349529-149B-498B-8A55-373E6A67E1F0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
@@ -338,6 +341,9 @@ Global
 		{BA9A65A0-00FE-4BF4-A023-7D804817453F}.InstallerMSI|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{BA9A65A0-00FE-4BF4-A023-7D804817453F}.InstallerMSI|Mixed Platforms.Build.0 = Release|Any CPU
 		{BA9A65A0-00FE-4BF4-A023-7D804817453F}.InstallerMSI|x86.ActiveCfg = Release|Any CPU
+		{BA9A65A0-00FE-4BF4-A023-7D804817453F}.Linux|Any CPU.ActiveCfg = Release|Any CPU
+		{BA9A65A0-00FE-4BF4-A023-7D804817453F}.Linux|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{BA9A65A0-00FE-4BF4-A023-7D804817453F}.Linux|x86.ActiveCfg = Release|Any CPU
 		{BA9A65A0-00FE-4BF4-A023-7D804817453F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA9A65A0-00FE-4BF4-A023-7D804817453F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BA9A65A0-00FE-4BF4-A023-7D804817453F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
@@ -368,6 +374,9 @@ Global
 		{2982FF97-C9E3-412F-AEB5-E52E27E5C850}.InstallerMSI|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{2982FF97-C9E3-412F-AEB5-E52E27E5C850}.InstallerMSI|Mixed Platforms.Build.0 = Release|Any CPU
 		{2982FF97-C9E3-412F-AEB5-E52E27E5C850}.InstallerMSI|x86.ActiveCfg = Release|Any CPU
+		{2982FF97-C9E3-412F-AEB5-E52E27E5C850}.Linux|Any CPU.ActiveCfg = Release|Any CPU
+		{2982FF97-C9E3-412F-AEB5-E52E27E5C850}.Linux|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2982FF97-C9E3-412F-AEB5-E52E27E5C850}.Linux|x86.ActiveCfg = Release|Any CPU
 		{2982FF97-C9E3-412F-AEB5-E52E27E5C850}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2982FF97-C9E3-412F-AEB5-E52E27E5C850}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2982FF97-C9E3-412F-AEB5-E52E27E5C850}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU

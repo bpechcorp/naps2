@@ -24,6 +24,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Mono.SANE;
+using NAPS2.Scan.Exceptions;
 using NAPS2.Scan.Images;
 using NAPS2.WinForms;
 
@@ -34,12 +35,10 @@ namespace NAPS2.Scan.Sane
         public const string DRIVER_NAME = "sane";
         
         private readonly IFormFactory formFactory;
-        private readonly IScannedImageFactory scannedImageFactory;
 
-        public SaneScanDriver(IFormFactory formFactory, IScannedImageFactory scannedImageFactory)
+        public SaneScanDriver(IFormFactory formFactory)
         {
             this.formFactory = formFactory;
-            this.scannedImageFactory = scannedImageFactory;
         }
 
         public override string DriverName
@@ -47,21 +46,41 @@ namespace NAPS2.Scan.Sane
             get { return DRIVER_NAME; }
         }
 
+        //protected override ScanDevice PromptForDeviceInternal()
+        //{
+        //    MessageBox.Show(string.Format("{0} scanners available. Choosing first. Choices: {1}",
+        //        SANEControl.Scanners.Count, string.Join(", ", SANEControl.Scanners.Select(x => x.Key))));
+        //    // TODO
+        //    var scanner = SANEControl.Scanners.Select(x => x.Value).FirstOrDefault();
+        //    if (scanner == null)
+        //    {
+        //        return null;
+        //    }
+        //    MessageBox.Show("id= " + scanner.Deviceid + " |model= " + scanner.Model + " |type= " + scanner.Type + " |vendor= " + scanner.Vendor);
+        //    return new ScanDevice(scanner.Deviceid, scanner.Model);
+        //}
+
         protected override ScanDevice PromptForDeviceInternal()
         {
-            MessageBox.Show(string.Format("{0} scanners available. Choosing first. Choices: {1}",
-                SANEControl.Scanners.Count, string.Join(", ", SANEControl.Scanners.Select(x => x.Key))));
-            // TODO
-            var scanner = SANEControl.Scanners.Select(x => x.Value).FirstOrDefault();
-            if (scanner == null)
+            var deviceList = GetDeviceList();
+
+            if (!deviceList.Any())
             {
-                return null;
+                throw new NoDevicesFoundException();
             }
-            MessageBox.Show("id= " + scanner.Deviceid + " |model= " + scanner.Model + " |type= " + scanner.Type + " |vendor= " + scanner.Vendor);
-            return new ScanDevice(scanner.Deviceid, scanner.Model);
+
+            var form = formFactory.Create<FSelectDevice>();
+            form.DeviceList = deviceList;
+            form.ShowDialog();
+            return form.SelectedDevice;
         }
 
-        protected override IEnumerable<IScannedImage> ScanInternal()
+        protected override List<ScanDevice> GetDeviceListInternal()
+        {
+            return SANEControl.Scanners.Select(x => x.Value).Select(scanner => new ScanDevice(scanner.Deviceid, scanner.Model)).ToList();
+        }
+
+        protected override IEnumerable<ScannedImage> ScanInternal()
         {
             SANEControl.RefreshScanners();
             var scanner = SANEControl.GetScannerByDeviceID(ScanDevice.ID);
@@ -73,7 +92,7 @@ namespace NAPS2.Scan.Sane
             using (var image = scanner.ScanImage())
             using (var bitmap = new Bitmap(image))
             {
-                yield return scannedImageFactory.Create(bitmap, ScanBitDepth.C24Bit, false);
+                yield return new ScannedImage(bitmap, ScanBitDepth.C24Bit, ScanProfile.MaxQuality, ScanProfile.Quality);
             }
         }
     }

@@ -82,6 +82,7 @@ namespace NAPS2.Scan.Sane
 
         protected override IEnumerable<ScannedImage> ScanInternal()
         {
+            MessageBox.Show("Scan");
             SANEControl.RefreshScanners();
             var scanner = SANEControl.GetScannerByDeviceID(ScanDevice.ID);
             foreach (var option in scanner.Options)

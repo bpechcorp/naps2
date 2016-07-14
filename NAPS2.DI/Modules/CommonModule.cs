@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 using NAPS2.Config;
 using NAPS2.Host;
 using NAPS2.ImportExport;
@@ -49,11 +50,13 @@ namespace NAPS2.DI.Modules
             Bind<IScanDriverFactory>().To<NinjectScanDriverFactory>();
 #endif
 #if LINUX
+            MessageBox.Show("Linux!");
             Bind<IScanDriver>().To<SaneScanDriver>().Named(SaneScanDriver.DRIVER_NAME);
             // TODO: Remove below
             Bind<IScanDriver>().To<SaneScanDriver>().Named(WiaScanDriver.DRIVER_NAME);
             Bind<IScanDriver>().To<SaneScanDriver>().Named(TwainScanDriver.DRIVER_NAME);
 #else
+            MessageBox.Show("Not Linux!");
             Bind<IScanDriver>().To<WiaScanDriver>().Named(WiaScanDriver.DRIVER_NAME);
             Bind<IScanDriver>().To<TwainScanDriver>().Named(TwainScanDriver.DRIVER_NAME);
 #endif

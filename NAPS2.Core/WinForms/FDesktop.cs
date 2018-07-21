@@ -535,6 +535,18 @@ namespace NAPS2.WinForms
             tsSavePDFSelected.Enabled = tsSaveImagesSelected.Enabled = tsEmailPDFSelected.Enabled = tsReverseSelected.Enabled =
                 SelectedIndices.Any();
 
+            // "AlfAll" dropdown items
+            tsAlfSavePDFAll.Text = tsSaveImagesAll.Text = tsEmailPDFAll.Text = tsReverseAll.Text =
+                string.Format(MiscResources.AllCount, imageList.Images.Count);
+            tsAlfSavePDFAll.Enabled = tsSaveImagesAll.Enabled = tsEmailPDFAll.Enabled = tsReverseAll.Enabled =
+                imageList.Images.Any();
+
+            // "AlfSelected" dropdown items
+            tsAlfSavePDFSelected.Text = tsSaveImagesSelected.Text = tsEmailPDFSelected.Text = tsReverseSelected.Text =
+                string.Format(MiscResources.SelectedCount, SelectedIndices.Count());
+            tsAlfSavePDFSelected.Enabled = tsSaveImagesSelected.Enabled = tsEmailPDFSelected.Enabled = tsReverseSelected.Enabled =
+                SelectedIndices.Any();
+
             // Top-level toolbar actions
             tsdImage.Enabled = tsdRotate.Enabled = tsMove.Enabled = tsDelete.Enabled = SelectedIndices.Any();
             tsdReorder.Enabled = tsdSavePDF.Enabled = tsdSaveImages.Enabled = tsdEmailPDF.Enabled = tsPrint.Enabled = tsClear.Enabled = imageList.Images.Any();
@@ -1109,6 +1121,30 @@ namespace NAPS2.WinForms
             }
         }
 
+        private void tsdAlfSavePDF_ButtonClick(object sender, EventArgs e)
+        {
+            if (appConfigManager.Config.HideSavePdfButton)
+            {
+                return;
+            }
+
+            var action = appConfigManager.Config.SaveButtonDefaultAction;
+
+            if (action == SaveButtonDefaultAction.AlwaysPrompt
+                || action == SaveButtonDefaultAction.PromptIfSelected && SelectedIndices.Any())
+            {
+                tsdAlfSavePDF.ShowDropDown();
+            }
+            else if (action == SaveButtonDefaultAction.SaveSelected && SelectedIndices.Any())
+            {
+                SavePDF(SelectedImages.ToList());
+            }
+            else
+            {
+                SavePDF(imageList.Images);
+            }
+        }
+
         private void tsdSaveImages_ButtonClick(object sender, EventArgs e)
         {
             if (appConfigManager.Config.HideSaveImagesButton)
@@ -1209,6 +1245,18 @@ namespace NAPS2.WinForms
             SavePDF(imageList.Images);
         }
 
+        //TODO:
+        private void tsAlfSavePDFAll_Click(object sender, EventArgs e)
+        {
+            if (appConfigManager.Config.HideSavePdfButton)
+            {
+                return;
+            }
+
+            //SavePDF(imageList.Images);
+            Debug.WriteLine("tsAlfSavePDFAll_Click");
+        }
+
         private void tsSavePDFSelected_Click(object sender, EventArgs e)
         {
             if (appConfigManager.Config.HideSavePdfButton)
@@ -1217,6 +1265,18 @@ namespace NAPS2.WinForms
             }
 
             SavePDF(SelectedImages.ToList());
+        }
+
+        //TODO:
+        private void tsAlfSavePDFSelected_Click(object sender, EventArgs e)
+        {
+            if (appConfigManager.Config.HideSavePdfButton)
+            {
+                return;
+            }
+
+            //SavePDF(SelectedImages.ToList());
+            Debug.WriteLine("tsAlfSavePDFSelected_Click");
         }
 
         private void tsPDFSettings_Click(object sender, EventArgs e)

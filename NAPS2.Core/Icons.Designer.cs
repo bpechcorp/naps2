@@ -103,6 +103,16 @@ namespace NAPS2 {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap alfresco32 {
+            get {
+                object obj = ResourceManager.GetObject("alfresco32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap application_cascade {
             get {
                 object obj = ResourceManager.GetObject("application_cascade", resourceCulture);

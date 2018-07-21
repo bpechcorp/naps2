@@ -5195,6 +5195,7 @@
   <ItemGroup>
     <None Include="Icons\btn_donate_LG.gif" />
     <None Include="Icons\application_cascade.png" />
+    <None Include="Icons\alfresco32.png" />
     <Content Include="Icons\application_cascade.ico" />
     <Content Include="Icons\arrow_left.png" />
     <Content Include="Icons\arrow_right.png" />

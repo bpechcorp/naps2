@@ -55,11 +55,17 @@ namespace NAPS2.WinForms
             this.tsOcr = new System.Windows.Forms.ToolStripButton();
             this.tsImport = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+
             this.tsdSavePDF = new System.Windows.Forms.ToolStripSplitButton();
             this.tsSavePDFAll = new System.Windows.Forms.ToolStripMenuItem();
             this.tsSavePDFSelected = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.tsPDFSettings = new System.Windows.Forms.ToolStripMenuItem();
+
+            this.tsdAlfSavePDF = new System.Windows.Forms.ToolStripSplitButton();
+            this.tsAlfSavePDFAll = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsAlfSavePDFSelected = new System.Windows.Forms.ToolStripMenuItem();
+
             this.tsdSaveImages = new System.Windows.Forms.ToolStripSplitButton();
             this.tsSaveImagesAll = new System.Windows.Forms.ToolStripMenuItem();
             this.tsSaveImagesSelected = new System.Windows.Forms.ToolStripMenuItem();
@@ -239,6 +245,7 @@ namespace NAPS2.WinForms
             this.tsImport,
             this.toolStripSeparator5,
             this.tsdSavePDF,
+            this.tsdAlfSavePDF,
             this.tsdSaveImages,
             this.tsdEmailPDF,
             this.tsPrint,
@@ -310,6 +317,7 @@ namespace NAPS2.WinForms
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
             resources.ApplyResources(this.toolStripSeparator5, "toolStripSeparator5");
+
             // 
             // tsdSavePDF
             // 
@@ -346,6 +354,32 @@ namespace NAPS2.WinForms
             this.tsPDFSettings.Name = "tsPDFSettings";
             resources.ApplyResources(this.tsPDFSettings, "tsPDFSettings");
             this.tsPDFSettings.Click += new System.EventHandler(this.tsPDFSettings_Click);
+
+            // 
+            // tsdAlfSavePDF
+            // 
+            this.tsdAlfSavePDF.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+                this.tsAlfSavePDFAll,
+                this.tsAlfSavePDFSelected
+            });
+            this.tsdAlfSavePDF.Image = global::NAPS2.Icons.alfresco32;
+            resources.ApplyResources(this.tsdAlfSavePDF, "tsdAlfSavePDF");
+            this.tsdAlfSavePDF.Margin = new System.Windows.Forms.Padding(5, 1, 5, 2);
+            this.tsdAlfSavePDF.Name = "tsdAlfSavePDF";
+            this.tsdAlfSavePDF.ButtonClick += new System.EventHandler(this.tsdAlfSavePDF_ButtonClick);
+            // 
+            // tsAlfSavePDFAll
+            // 
+            this.tsAlfSavePDFAll.Name = "tsAlfSavePDFAll";
+            resources.ApplyResources(this.tsAlfSavePDFAll, "tsAlfSavePDFAll");
+            this.tsAlfSavePDFAll.Click += new System.EventHandler(this.tsAlfSavePDFAll_Click);
+            // 
+            // tsSavePDFSelected
+            // 
+            this.tsAlfSavePDFSelected.Name = "tsAlfSavePDFSelected";
+            resources.ApplyResources(this.tsAlfSavePDFSelected, "tsAlfSavePDFSelected");
+            this.tsAlfSavePDFSelected.Click += new System.EventHandler(this.tsAlfSavePDFSelected_Click);
+
             // 
             // tsdSaveImages
             // 
@@ -720,9 +754,15 @@ namespace NAPS2.WinForms
         private System.Windows.Forms.ToolStripButton tsDelete;
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
         private System.Windows.Forms.ToolStripButton tsImport;
+
         private System.Windows.Forms.ToolStripSplitButton tsdSavePDF;
         private System.Windows.Forms.ToolStripMenuItem tsSavePDFAll;
         private System.Windows.Forms.ToolStripMenuItem tsSavePDFSelected;
+
+        private System.Windows.Forms.ToolStripSplitButton tsdAlfSavePDF;
+        private System.Windows.Forms.ToolStripMenuItem tsAlfSavePDFAll;
+        private System.Windows.Forms.ToolStripMenuItem tsAlfSavePDFSelected;
+
         private System.Windows.Forms.ToolStripDropDownButton tsdRotate;
         private System.Windows.Forms.ToolStripMenuItem tsRotateLeft;
         private System.Windows.Forms.ToolStripMenuItem tsRotateRight;

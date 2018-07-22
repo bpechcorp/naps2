@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using NAPS2.Config;
 using NAPS2.ImportExport;
 using NAPS2.ImportExport.Email;
@@ -13,6 +14,7 @@ using NAPS2.Ocr;
 using NAPS2.Operation;
 using NAPS2.Scan.Images;
 using NAPS2.Util;
+using NAPS2_Alfresco.utils;
 
 namespace NAPS2.WinForms
 {
@@ -68,6 +70,31 @@ namespace NAPS2.WinForms
                     changeTracker.HasUnsavedChanges = false;
                     notify?.PdfSaved(subSavePath);
                     return true;
+                }
+            }
+            return false;
+        }
+
+        //TODO
+        public bool AlfSavePDF(List<ScannedImage> images, ISaveNotify notify)
+        {
+            if (images.Any())
+            {
+                var savePath = NAPS2_Alfresco.utils.FileUtils.GetTempPath() + "\\" + DateTime.Now.ToFileTime() + ".pdf";
+                if (ExportPDF(savePath, images, false))
+                {
+                    changeTracker.HasUnsavedChanges = false;
+
+                    NAPS2_Alfresco.AlfResult alfResult = SessionUtils.UploadFile(savePath);
+                    if (alfResult.status == NAPS2_Alfresco.AlfResult.STATUS_OK)
+                    {
+                        notify?.PdfSaved(savePath);
+                        return true;
+                    }
+                    else
+                    {
+                        MessageBox.Show(alfResult.message, "Error " + alfResult.status, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
             return false;

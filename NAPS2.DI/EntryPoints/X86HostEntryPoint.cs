@@ -54,5 +54,36 @@ namespace NAPS2.DI.EntryPoints
                 Environment.Exit(1);
             }
         }
+
+        public static void ShowFDesktop(string[] args)
+        {
+            try
+            {
+                var kernel = new StandardKernel(new CommonModule(), new WinFormsModule());
+                var hostService = kernel.Get<X86HostService>();
+
+                //Application.EnableVisualStyles();
+                //Application.SetCompatibleTextRenderingDefault(false);
+
+                string pipeName = string.Format(X86HostManager.PIPE_NAME_FORMAT, Process.GetCurrentProcess().Id);
+                var form = new BackgroundForm();
+                hostService.ParentForm = form;
+
+                using (var host = new ServiceHost(hostService))
+                {
+                    host.AddServiceEndpoint(typeof(IX86HostService),
+                        new NetNamedPipeBinding { ReceiveTimeout = TimeSpan.FromHours(24), SendTimeout = TimeSpan.FromHours(24) }, pipeName);
+                    host.Open();
+                    Console.Write('k');
+                    form.Show();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Write('k');
+                Log.FatalException("An error occurred that caused the 32-bit host application to close.", ex);
+                Environment.Exit(1);
+            }
+        }
     }
 }

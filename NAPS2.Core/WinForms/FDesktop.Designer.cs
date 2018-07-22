@@ -65,6 +65,7 @@ namespace NAPS2.WinForms
             this.tsdAlfSavePDF = new System.Windows.Forms.ToolStripSplitButton();
             this.tsAlfSavePDFAll = new System.Windows.Forms.ToolStripMenuItem();
             this.tsAlfSavePDFSelected = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsAlfLogout = new System.Windows.Forms.ToolStripMenuItem();
 
             this.tsdSaveImages = new System.Windows.Forms.ToolStripSplitButton();
             this.tsSaveImagesAll = new System.Windows.Forms.ToolStripMenuItem();
@@ -360,7 +361,8 @@ namespace NAPS2.WinForms
             // 
             this.tsdAlfSavePDF.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
                 this.tsAlfSavePDFAll,
-                this.tsAlfSavePDFSelected
+                this.tsAlfSavePDFSelected,
+                this.tsAlfLogout
             });
             this.tsdAlfSavePDF.Image = global::NAPS2.Icons.alfresco32;
             resources.ApplyResources(this.tsdAlfSavePDF, "tsdAlfSavePDF");
@@ -379,6 +381,20 @@ namespace NAPS2.WinForms
             this.tsAlfSavePDFSelected.Name = "tsAlfSavePDFSelected";
             resources.ApplyResources(this.tsAlfSavePDFSelected, "tsAlfSavePDFSelected");
             this.tsAlfSavePDFSelected.Click += new System.EventHandler(this.tsAlfSavePDFSelected_Click);
+            // 
+            // tsAlfLogout
+            // 
+            this.tsAlfLogout.Name = "tsAlfLogout";
+            resources.ApplyResources(this.tsAlfLogout, "tsAlfLogout");
+            this.tsAlfLogout.Click += new System.EventHandler(this.tsAlfLogout_Click);
+            if (NAPS2_Alfresco.utils.SessionUtils.Session == null)
+            {
+                this.tsAlfLogout.Text = NAPS2_Alfresco.AlfDefs.TEXT_LOGIN;
+            }
+            else
+            {
+                this.tsAlfLogout.Text = NAPS2_Alfresco.AlfDefs.TEXT_LOGOUT;
+            }
 
             // 
             // tsdSaveImages
@@ -762,6 +778,7 @@ namespace NAPS2.WinForms
         private System.Windows.Forms.ToolStripSplitButton tsdAlfSavePDF;
         private System.Windows.Forms.ToolStripMenuItem tsAlfSavePDFAll;
         private System.Windows.Forms.ToolStripMenuItem tsAlfSavePDFSelected;
+        private System.Windows.Forms.ToolStripMenuItem tsAlfLogout;
 
         private System.Windows.Forms.ToolStripDropDownButton tsdRotate;
         private System.Windows.Forms.ToolStripMenuItem tsRotateLeft;

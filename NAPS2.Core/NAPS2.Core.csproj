@@ -70,6 +70,10 @@
       <HintPath>..\packages\CommandLineParser.1.9.71\lib\net40\CommandLine.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="DotCMIS, Version=0.7.0.0, Culture=neutral, PublicKeyToken=0377a82433ccbb00, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\libs\DotCMIS.dll</HintPath>
+    </Reference>
     <Reference Include="Ghostscript.NET, Version=1.2.1.0, Culture=neutral, PublicKeyToken=f85051de34525b59, processorArchitecture=MSIL">
       <HintPath>..\packages\Ghostscript.NET.1.2.1\lib\net40\Ghostscript.NET.dll</HintPath>
     </Reference>
@@ -5274,6 +5278,12 @@
     <None Include="Icons\cancel-small.png" />
     <None Include="Icons\blueprints.png" />
     <None Include="Icons\blueprints-small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NAPS2_Alfresco\NAPS2_Alfresco.csproj">
+      <Project>{3ad76980-3cf4-4c6a-bc68-1d422e9aaddd}</Project>
+      <Name>NAPS2_Alfresco</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

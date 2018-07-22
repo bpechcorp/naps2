@@ -793,6 +793,13 @@
     <value>&amp;Selected ({0})</value>
   </data>
 
+  <data name="tsAlfLogout.Size" type="System.Drawing.Size, System.Drawing">
+    <value>143, 22</value>
+  </data>
+  <!--<data name="tsAlfLogout.Text" xml:space="preserve">
+    <value>&amp;Logout</value>
+  </data>-->
+
   <data name="tsAlfSavePDFSelected.Size" type="System.Drawing.Size, System.Drawing">
     <value>143, 22</value>
   </data>

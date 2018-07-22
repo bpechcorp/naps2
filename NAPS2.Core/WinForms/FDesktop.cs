@@ -26,6 +26,8 @@ using NAPS2.Scan.Exceptions;
 using NAPS2.Scan.Images;
 using NAPS2.Scan.Wia;
 using NAPS2.Util;
+using NAPS2_Alfresco;
+using NAPS2_Alfresco.utils;
 
 #endregion
 
@@ -116,6 +118,7 @@ namespace NAPS2.WinForms
             if (appConfigManager.Config.HideSavePdfButton)
             {
                 tStrip.Items.Remove(tsdSavePDF);
+                tStrip.Items.Remove(tsdAlfSavePDF);
             }
             if (appConfigManager.Config.HideSaveImagesButton)
             {
@@ -549,7 +552,7 @@ namespace NAPS2.WinForms
 
             // Top-level toolbar actions
             tsdImage.Enabled = tsdRotate.Enabled = tsMove.Enabled = tsDelete.Enabled = SelectedIndices.Any();
-            tsdReorder.Enabled = tsdSavePDF.Enabled = tsdSaveImages.Enabled = tsdEmailPDF.Enabled = tsPrint.Enabled = tsClear.Enabled = imageList.Images.Any();
+            tsdReorder.Enabled = tsdSavePDF.Enabled = tsdAlfSavePDF.Enabled = tsdSaveImages.Enabled = tsdEmailPDF.Enabled = tsPrint.Enabled = tsClear.Enabled = imageList.Images.Any();
 
             // Context-menu actions
             ctxView.Visible = ctxCopy.Visible = ctxDelete.Visible = ctxSeparator1.Visible = ctxSeparator2.Visible = SelectedIndices.Any();
@@ -784,6 +787,18 @@ namespace NAPS2.WinForms
         private void SavePDF(List<ScannedImage> images)
         {
             if (exportHelper.SavePDF(images, notify))
+            {
+                if (appConfigManager.Config.DeleteAfterSaving)
+                {
+                    imageList.Delete(imageList.Images.IndiciesOf(images));
+                    UpdateThumbnails(Enumerable.Empty<int>(), false, false);
+                }
+            }
+        }
+
+        private void AlfSavePDF(List<ScannedImage> images)
+        {
+            if (exportHelper.AlfSavePDF(images, notify))
             {
                 if (appConfigManager.Config.DeleteAfterSaving)
                 {
@@ -1245,18 +1260,6 @@ namespace NAPS2.WinForms
             SavePDF(imageList.Images);
         }
 
-        //TODO:
-        private void tsAlfSavePDFAll_Click(object sender, EventArgs e)
-        {
-            if (appConfigManager.Config.HideSavePdfButton)
-            {
-                return;
-            }
-
-            //SavePDF(imageList.Images);
-            Debug.WriteLine("tsAlfSavePDFAll_Click");
-        }
-
         private void tsSavePDFSelected_Click(object sender, EventArgs e)
         {
             if (appConfigManager.Config.HideSavePdfButton)
@@ -1267,7 +1270,43 @@ namespace NAPS2.WinForms
             SavePDF(SelectedImages.ToList());
         }
 
-        //TODO:
+        private void tsPDFSettings_Click(object sender, EventArgs e)
+        {
+            FormFactory.Create<FPdfSettings>().ShowDialog();
+        }
+
+        //=============================Update by Kien Start==============================
+
+        private void setTextAlfLogout(string text)
+        {
+            this.tsAlfLogout.Text = text;
+        }
+
+        private void showAlfLogin()
+        {
+            AuthInfo authInfo = AuthInfo.ReadAuthInfo();
+            FLogin fLogin = new FLogin(authInfo, setTextAlfLogout);
+            FormUtils.ShowForm(fLogin);
+        }
+
+        private void tsAlfSavePDFAll_Click(object sender, EventArgs e)
+        {
+            if (appConfigManager.Config.HideSavePdfButton)
+            {
+                return;
+            }
+
+            if (SessionUtils.Session == null)
+            {
+                showAlfLogin();
+            }
+            else
+            {
+                List<ScannedImage> images = imageList.Images;
+                AlfSavePDF(imageList.Images);
+            }
+        }
+
         private void tsAlfSavePDFSelected_Click(object sender, EventArgs e)
         {
             if (appConfigManager.Config.HideSavePdfButton)
@@ -1275,14 +1314,40 @@ namespace NAPS2.WinForms
                 return;
             }
 
-            //SavePDF(SelectedImages.ToList());
-            Debug.WriteLine("tsAlfSavePDFSelected_Click");
+            if (SessionUtils.Session == null)
+            {
+                showAlfLogin();
+            }
+            else
+            {
+                AlfSavePDF(SelectedImages.ToList());
+            }
         }
 
-        private void tsPDFSettings_Click(object sender, EventArgs e)
+        private void tsAlfLogout_Click(object sender, EventArgs e)
         {
-            FormFactory.Create<FPdfSettings>().ShowDialog();
+            try
+            {
+                if (SessionUtils.Session != null)
+                {
+                    SessionUtils.Session = null;
+                    AuthInfo authInfo = new AuthInfo(AlfDefs.DEFAULT_SERVICE_URL, string.Empty, string.Empty);
+                    AuthInfo.SaveAuthInfo(authInfo);
+                    setTextAlfLogout(AlfDefs.TEXT_LOGIN);
+                    MessageBox.Show("Logout Success", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    showAlfLogin();
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.StackTrace);
+            }
         }
+
+        //=============================Update by Kien End==============================
 
         private void tsSaveImagesAll_Click(object sender, EventArgs e)
         {

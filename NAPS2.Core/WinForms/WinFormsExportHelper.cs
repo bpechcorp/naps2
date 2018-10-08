@@ -1,9 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
+using System.Xml;
 using NAPS2.Config;
 using NAPS2.ImportExport;
 using NAPS2.ImportExport.Email;
@@ -15,6 +22,8 @@ using NAPS2.Operation;
 using NAPS2.Scan.Images;
 using NAPS2.Util;
 using NAPS2_Alfresco.utils;
+using Newtonsoft.Json.Linq;
+using Xceed.Words.NET;
 
 namespace NAPS2.WinForms
 {
@@ -75,7 +84,61 @@ namespace NAPS2.WinForms
             return false;
         }
 
-        //TODO
+        //=========================AlfSavePDF Start=========================
+        public string getOcrId(string savePath)
+        {
+            Byte[] bytes = File.ReadAllBytes(savePath);
+            string fileName = Path.GetFileName(savePath);
+            string url = "http://103.63.109.205:9999/converts/upload";
+            url += "?fileName=" + fileName;
+
+            var client = new WebClient();
+            //var values = new NameValueCollection();
+            //values["base64"] = "aaaa";// Convert.ToBase64String(bytes);
+            var response = client.UploadFile(url, savePath);
+            var responseString = Encoding.Default.GetString(response);
+            //var request = (HttpWebRequest)WebRequest.Create(url);
+            //var postData = "base64=" + Convert.ToBase64String(bytes);
+            //var data = Encoding.UTF8.GetBytes(postData);
+            //request.Method = "POST";
+            //request.ContentType = "application/x-www-form-urlencoded";
+            //request.ContentLength = data.Length;
+            //using (var stream = request.GetRequestStream())
+            //{
+            //    stream.Write(data, 0, data.Length);
+            //    stream.Close();
+            //}
+            //var response = (HttpWebResponse)request.GetResponse();
+            //var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+            JObject json = JObject.Parse(responseString);
+            return json.GetValue("id").ToString();
+        }
+
+        public string getBase64DocX(string id)
+        {
+            string url = "http://103.63.109.205:9999/converts/getBase64DocX?id=" + id;
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            var response = (HttpWebResponse)request.GetResponse();
+            var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+            JObject json = JObject.Parse(responseString);
+            return json.GetValue("data").ToString();
+        }
+
+        public string readAllDocx(string filename)
+        {
+            FileStream fs = null;
+            try
+            {
+                fs = new FileStream(filename, FileMode.Open);
+                DocX docx = DocX.Load(fs);
+                return docx.Text;
+            }
+            finally
+            {
+                if (fs != null) fs.Close();
+            }
+        }
+
         public bool AlfSavePDF(List<ScannedImage> images, ISaveNotify notify)
         {
             if (images.Any())
@@ -85,20 +148,59 @@ namespace NAPS2.WinForms
                 {
                     changeTracker.HasUnsavedChanges = false;
 
-                    NAPS2_Alfresco.AlfResult alfResult = SessionUtils.UploadFile(savePath);
-                    if (alfResult.status == NAPS2_Alfresco.AlfResult.STATUS_OK)
+                    try
                     {
-                        notify?.PdfSaved(savePath);
-                        return true;
+                        string ocrId = getOcrId(savePath);
+                        MessageBox.Show("Processing, please wait about 1 minutes", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        Thread.Sleep(45000);
+                        string docxData = getBase64DocX(ocrId);
+                        Byte[] bytes = Convert.FromBase64String(docxData);
+                        var docxSavePath = NAPS2_Alfresco.utils.FileUtils.GetTempPath() + "\\" + DateTime.Now.ToFileTime() + ".docx";
+                        File.WriteAllBytes(docxSavePath, bytes);
+                        string docxContent = readAllDocx(docxSavePath);
+                        string docxContentLower = docxContent.ToLower();
+                        //Debug.WriteLine(docxContent);
+
+                        string desc = Regex.Split(docxContent, "\r\n|\r|\n")[0];
+                        Debug.WriteLine(desc);
+                        if (docxContent.Contains("HƯỚNG") || docxContentLower.Contains("hướng dẫn"))
+                        {
+                            SessionUtils.UploadFile(savePath, "huongdan", desc);
+                            SessionUtils.UploadFile(docxSavePath, "huongdan", desc);
+                        }
+                        else if (docxContent.Contains("BÁO") || docxContentLower.Contains("báo cáo"))
+                        {
+                            SessionUtils.UploadFile(savePath, "baocao", desc);
+                            SessionUtils.UploadFile(docxSavePath, "baocao", desc);
+                        }
+                        else if (docxContent.Contains("CHỈ") || docxContentLower.Contains("chỉ thị"))
+                        {
+                            SessionUtils.UploadFile(savePath, "chithi", desc);
+                            SessionUtils.UploadFile(docxSavePath, "chithi", desc);
+                        }
+
+                        MessageBox.Show("SUCCESS", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
-                    else
+                    catch (Exception e)
                     {
-                        MessageBox.Show(alfResult.message, "Error " + alfResult.status, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show(e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
+
+                    //NAPS2_Alfresco.AlfResult alfResult = SessionUtils.UploadFile(savePath);
+                    //if (alfResult.status == NAPS2_Alfresco.AlfResult.STATUS_OK)
+                    //{
+                    //    notify?.PdfSaved(savePath);
+                    //    return true;
+                    //}
+                    //else
+                    //{
+                    //    MessageBox.Show(alfResult.message, "Error " + alfResult.status, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    //}
                 }
             }
             return false;
         }
+        //=========================AlfSavePDF End=========================
 
         public bool ExportPDF(string filename, List<ScannedImage> images, bool email)
         {

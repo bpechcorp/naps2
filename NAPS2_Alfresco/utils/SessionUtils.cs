@@ -54,7 +54,7 @@ namespace NAPS2_Alfresco.utils
             return session;
         }
 
-        public static AlfResult UploadFile(string filePath)
+        public static AlfResult UploadFile(string filePath, string subpath, string description)
         {
             try
             {
@@ -62,7 +62,7 @@ namespace NAPS2_Alfresco.utils
                 {
                     AuthInfo authInfo = AuthInfo.ReadAuthInfo();
                     //IFolder rootFolder = session.GetRootFolder();
-                    IFolder userHomeFolder = (IFolder)Session.GetObjectByPath("/" + AlfDefs.DEFAULT_DIR_NAME_USER_HOMES + "/" + authInfo.username);
+                    IFolder userHomeFolder = (IFolder)Session.GetObjectByPath("/" + AlfDefs.DEFAULT_DIR_NAME_USER_HOMES + "/" + authInfo.username + "/" + subpath);
 
                     // document name
                     string formattedName = Path.GetFileName(filePath);
@@ -73,6 +73,7 @@ namespace NAPS2_Alfresco.utils
 
                     // define object type as document, as we wanted to create document
                     properties.Add(PropertyIds.ObjectTypeId, "cmis:document");
+                    //properties.Add("P:cm:description", description);
 
                     // read a empty document with empty bytes
                     // fileUpload1: is a .net file upload control
